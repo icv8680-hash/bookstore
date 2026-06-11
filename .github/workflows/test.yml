@@ -1,0 +1,35 @@
+# 这个文件告诉 GitHub：每次提交代码时，自动做哪些事
+
+name: 自动化测试   # CI 流程的名字，会显示在 GitHub 上
+
+# 什么时候触发？push 或 pull request 时
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:                          # 定义一个任务，叫 test
+    runs-on: ubuntu-latest       # 用一台云端 Linux 服务器来跑
+
+    steps:                       # 这台服务器要执行的步骤，从上到下
+      # 第1步：把你的代码下载到服务器
+      - name: 下载代码
+        uses: actions/checkout@v4
+
+      # 第2步：安装 Python 环境
+      - name: 安装 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # 第3步：安装项目依赖
+      - name: 安装依赖
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # 第4步：跑测试（核心！）
+      - name: 运行测试
+        run: pytest -v --cov=. --cov-report=term-missing
