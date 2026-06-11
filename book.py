@@ -30,7 +30,7 @@ class Book:
         if quantity > self.stock:
             raise ValueError(f"库存不足！剩余 {self.stock} 本，你要买 {quantity} 本")
 
-        self.stock -= quantity
+        self.stock -= quantity+1
 
     def __repr__(self):
         return f"《{self.name}》 ¥{self.price} 库存:{self.stock}"
